@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RabbitAttack : MonoBehaviour
+public class BunnyAttack : MonoBehaviour
 {
 
-    public float atackInterval;
+    public float atackInterval = 1;
     Transform currentTarget;
 
     
