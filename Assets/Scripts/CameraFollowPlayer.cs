@@ -20,8 +20,8 @@ public class CameraFollowPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveInput = Input.GetAxis("Horizontal");
-        transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * moveInput);
+        moveInput = Input.GetAxis("Vertical");
+        transform.Translate(new Vector3(0, Mathf.Sin(45), Mathf.Sin(45)) * Time.deltaTime * moveSpeed * moveInput);
         float xPos = transform.position.x;
 
         if (Mathf.Abs(xPos) > moveRange)

@@ -17,7 +17,7 @@ public class SnowballMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(transform.position.y < 0.5f)
+        if(transform.position.y < 0.2f)
         {
             Destroy(gameObject);
         }

@@ -5,9 +5,12 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     public GameObject snowball;
-    public Vector3 snowballOffset = new Vector3(+0.5f, 0, 0);
+    public float powerMin = 5;
+    public float powerMax = 10;
     float chargeStart;
     float chargeTime;
+    public Animator animator;
+    public GameObject arma;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,8 +44,8 @@ public class PlayerAttack : MonoBehaviour
 
     void Shoot()
     {
-        GameObject newBall = Instantiate<GameObject>(snowball, transform.position - snowballOffset, snowball.transform.rotation);
+        GameObject newBall = Instantiate<GameObject>(snowball, arma.transform.position, snowball.transform.rotation);
         SnowballMovement movement = newBall.GetComponent<SnowballMovement>();
-        movement.impulseForce = Mathf.Min(8, 5 + chargeTime);
+        movement.impulseForce = Mathf.Min(powerMax, powerMin + chargeTime);
     }
 }

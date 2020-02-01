@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BunnyMovement : MonoBehaviour
 {
@@ -14,30 +15,52 @@ public class BunnyMovement : MonoBehaviour
     float initialMaxRotation = 45;
     float borderRange = 25;
     public Rigidbody rb;
+    public NavMeshAgent navAgent;
+    private Transform playerTransform;
+    private float chaseDistance = -5;
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Move());
+        StartCoroutine(ChangeFacing());
+        InvokeRepeating("ChasePlayer", 0, 1);
+        playerTransform = GameObject.Find("Snowman").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(transform.position.z <= chaseDistance && navAgent.pathStatus.Equals(NavMeshPathStatus.PathComplete))
+        {
+            move();
+        }
+    }
+
+    void ChasePlayer()
+    {
+        if(transform.position.z > chaseDistance)
+        {
+            navAgent.SetDestination(playerTransform.position);
+        }
+    }
+
+    void move()
+    {
         rb.velocity = transform.forward * speed;
-        if(transform.position.x > borderRange - 1)
+        if (transform.position.x > borderRange - 1)
         {
             maxRotation = 0;
-            ChangeFacing();
-        } else
+            RandomFacing();
+        }
+        else
         {
             maxRotation = initialMaxRotation;
         }
 
-        if (transform.position.x < - (borderRange - 1))
+        if (transform.position.x < -(borderRange - 1))
         {
             minRotation = 0;
-            ChangeFacing();
+            RandomFacing();
         }
         else
         {
@@ -45,16 +68,16 @@ public class BunnyMovement : MonoBehaviour
         }
     }
 
-    IEnumerator Move()
+    IEnumerator ChangeFacing()
     {
-        while(!isAttacking)
+        while(!isAttacking && transform.position.z <= chaseDistance && navAgent.pathStatus.Equals(NavMeshPathStatus.PathComplete))
         {
-            ChangeFacing();
+            RandomFacing();
             yield return new WaitForSeconds(facingInterval);
         }
     }
 
-    void ChangeFacing()
+    void RandomFacing()
     {
         facing = Random.Range(minRotation, maxRotation);
         facingInterval = Random.Range(1, 3);
@@ -66,11 +89,11 @@ public class BunnyMovement : MonoBehaviour
         if(otherPosX < transform.position.x)
         {
             minRotation = 0;
-            ChangeFacing();
+            RandomFacing();
         } else
         {
             maxRotation = 0;
-            ChangeFacing();
+            RandomFacing();
         }
     }
 
@@ -93,6 +116,7 @@ public class BunnyMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Wall"))
         {
             isAttacking = false;
+            navAgent.SetDestination(transform.position + 2 * Vector3.forward);
         }
     }
 }
