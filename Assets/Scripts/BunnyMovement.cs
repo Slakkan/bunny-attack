@@ -78,7 +78,6 @@ public class BunnyMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
-            Debug.Log("Entré");
             isAttacking = true;
         }
 
@@ -93,7 +92,6 @@ public class BunnyMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
-            Debug.Log("Sali");
             isAttacking = false;
         }
     }

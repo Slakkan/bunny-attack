@@ -13,17 +13,15 @@ enum Status
 public class WallStatus : MonoBehaviour
 {
     Status status;
-    
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.gameObject.CompareTag("SnowBall"))
+        if (other.gameObject.CompareTag("SnowBall"))
         {
             Repair();
-            Destroy(collision.gameObject);
+            Destroy(other.gameObject);
         }
     }
-
 
     public void Damage()
     {
