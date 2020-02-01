@@ -28,7 +28,6 @@ public class WallStatus : MonoBehaviour
     public void Damage()
     {
         status++;
-        Debug.Log(status);
         if(status == Status.destroyed)
         {
             Destroy(gameObject);
