@@ -24,6 +24,9 @@ public class BunnyAttack : MonoBehaviour
         if(currentTarget != null)
         {
             currentTarget.GetComponent<WallStatus>().Damage();
-        }        
+        } else
+        {
+            CancelInvoke("Attack");
+        }
     }
 }

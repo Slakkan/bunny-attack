@@ -28,6 +28,7 @@ public class BunnyMovement : MonoBehaviour
         if(transform.position.x > borderRange - 1)
         {
             maxRotation = 0;
+            ChangeFacing();
         } else
         {
             maxRotation = initialMaxRotation;
@@ -36,6 +37,7 @@ public class BunnyMovement : MonoBehaviour
         if (transform.position.x < - (borderRange - 1))
         {
             minRotation = 0;
+            ChangeFacing();
         }
         else
         {
@@ -47,10 +49,28 @@ public class BunnyMovement : MonoBehaviour
     {
         while(!isAttacking)
         {
-            facing = Random.Range(minRotation, maxRotation);
-            facingInterval = Random.Range(1, 3);
-            transform.eulerAngles = Vector3.up * facing;
+            ChangeFacing();
             yield return new WaitForSeconds(facingInterval);
+        }
+    }
+
+    void ChangeFacing()
+    {
+        facing = Random.Range(minRotation, maxRotation);
+        facingInterval = Random.Range(1, 3);
+        transform.eulerAngles = Vector3.up * facing;
+    }
+
+    void AvoidOtherBunnies(float otherPosX)
+    {
+        if(otherPosX < transform.position.x)
+        {
+            minRotation = 0;
+            ChangeFacing();
+        } else
+        {
+            maxRotation = 0;
+            ChangeFacing();
         }
     }
 
@@ -58,15 +78,22 @@ public class BunnyMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
+            Debug.Log("Entré");
             isAttacking = true;
         }
-        
+
+        if (collision.gameObject.CompareTag("Bunny"))
+        {
+            AvoidOtherBunnies(collision.gameObject.transform.position.x);
+        }
+
     }
 
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
+            Debug.Log("Sali");
             isAttacking = false;
         }
     }
