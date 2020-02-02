@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public AudioSource throwAudio;
     public GameObject snowball;
-    public float powerMin = 5;
+    public float powerMin = 3;
     public float powerMax = 6;
+    public float chargeSpeed = 3;
     float chargeStart;
     float chargeTime;
     public Animator animator;
@@ -40,7 +42,7 @@ public class PlayerAttack : MonoBehaviour
 
     void StopCharging()
     {
-        chargeTime = Time.time - chargeStart;
+        chargeTime = (Time.time - chargeStart) * chargeSpeed;
         Shoot();
     }
 
@@ -48,13 +50,17 @@ public class PlayerAttack : MonoBehaviour
     {
         GameObject newBall = Instantiate<GameObject>(snowball, arma.transform.position, snowball.transform.rotation);
         SnowballMovement movement = newBall.GetComponent<SnowballMovement>();
-        movement.impulseForce = Mathf.Min(powerMax, powerMin + chargeTime);
+        Debug.Log(powerMin);
+        Debug.Log(powerMax);
+        Debug.Log(chargeTime);
+        movement.impulseForce += Mathf.Min(powerMax, powerMin + chargeTime);
     }
 
     void Shoot()
     {
         if(!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
+            throwAudio.Play();
             animator.SetTrigger("Attack");
         }
     }

@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class BunnyAttack : MonoBehaviour
 {
+    int attacksBeforeRetreat = 2;
+    public GameObject bunnyPrefab;
+    BunnyMovement bunnyMovement;
     Transform currentTarget;
     [SerializeField] private Animator animator;
+
+    private void Start()
+    {
+        bunnyMovement = bunnyPrefab.gameObject.GetComponent<BunnyMovement>();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Wall"))
+        if(!bunnyMovement.isRetrating && collision.gameObject.CompareTag("Wall"))
         {
             animator.SetBool("isKicking", true);
             currentTarget = collision.transform;
@@ -18,7 +27,7 @@ public class BunnyAttack : MonoBehaviour
 
     void Attack()
     {
-        if(currentTarget != null)
+        if(!bunnyMovement.isRetrating && currentTarget != null)
         {
             WallStatus wallStatus = currentTarget.GetComponent<WallStatus>();
             if(wallStatus.status == Status.broken)
@@ -26,7 +35,11 @@ public class BunnyAttack : MonoBehaviour
                 animator.SetBool("isKicking", false);
             }
             wallStatus.Damage();
-
+            attacksBeforeRetreat -= 1;
+            if(attacksBeforeRetreat == 0)
+            {
+                bunnyMovement.Retreat();
+            }
         }
     }
 }

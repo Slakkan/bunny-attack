@@ -123,5 +123,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 674936478821444123}
-  impulseForce: 10
+  impulseForce: 1
   impulseAngle: {x: 0, y: 0, z: 0}

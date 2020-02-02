@@ -953,6 +953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f6e15cae2841934f8b5f8c8a329418f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bunnyPrefab: {fileID: 5314373450702848146}
   animator: {fileID: -6057140222963153312}
 --- !u!114 &-9116450178898484501
 MonoBehaviour:
@@ -966,8 +967,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f6ce66e9d074a4b9c5cde9593db6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isRetrating: 0
   rb: {fileID: 5306840070466826849}
   navAgent: {fileID: -8559419737925526237}
+  animator: {fileID: -6057140222963153312}
 --- !u!195 &-8559419737925526237
 NavMeshAgent:
   m_ObjectHideFlags: 0

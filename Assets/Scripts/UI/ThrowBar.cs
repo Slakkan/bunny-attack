@@ -33,7 +33,7 @@ public class ThrowBar : MonoBehaviour
     {
         if(isCharging && currentCharge < maxCharge)
         {
-            float timeDif = Time.time - chargeStart;
+            float timeDif = (Time.time - chargeStart) * playerAttack.chargeSpeed;
             currentCharge = timeDif / maxCharge;
             transform.localScale = new Vector3(transform.localScale.x, currentCharge, transform.localScale.z);
         }

@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class BunnyMovement : MonoBehaviour
 {
     bool isAttacking;
+    public bool isRetrating;
     float facing;
     float facingInterval;
     float speed = 3;
@@ -17,11 +18,14 @@ public class BunnyMovement : MonoBehaviour
     public Rigidbody rb;
     public NavMeshAgent navAgent;
     private Transform playerTransform;
+    public Animator animator;
     private float chaseDistance = -5;
+    Vector3 initialPos;
 
     // Start is called before the first frame update
     void Start()
     {
+        initialPos = transform.position;
         StartCoroutine(ChangeFacing());
         InvokeRepeating("ChasePlayer", 0, 0.1f);
         playerTransform = GameObject.Find("Snowman").transform;
@@ -30,15 +34,20 @@ public class BunnyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(transform.position.z <= chaseDistance && navAgent.pathStatus.Equals(NavMeshPathStatus.PathComplete))
+        if(!isRetrating && transform.position.z <= chaseDistance && navAgent.pathStatus.Equals(NavMeshPathStatus.PathComplete))
         {
             move();
+        }
+
+        if (isRetrating && Vector3.Distance(transform.position, initialPos) < 0.5f)
+        {
+            Destroy(gameObject);
         }
     }
 
     void ChasePlayer()
     {
-        if(transform.position.z > chaseDistance)
+        if(!isRetrating && transform.position.z > chaseDistance)
         {
             navAgent.SetDestination(playerTransform.position);
         }
@@ -68,9 +77,17 @@ public class BunnyMovement : MonoBehaviour
         }
     }
 
+    public void Retreat()
+    {
+        isRetrating = true;
+        isAttacking = false;
+        animator.SetBool("isKicking" ,isAttacking);
+        navAgent.SetDestination(initialPos);
+    }
+
     IEnumerator ChangeFacing()
     {
-        while(!isAttacking && transform.position.z <= chaseDistance && navAgent.pathStatus.Equals(NavMeshPathStatus.PathComplete))
+        while(!isRetrating && !isAttacking && transform.position.z <= chaseDistance && navAgent.pathStatus.Equals(NavMeshPathStatus.PathComplete))
         {
             RandomFacing();
             yield return new WaitForSeconds(facingInterval);
@@ -99,9 +116,10 @@ public class BunnyMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Wall"))
+        if (!isRetrating && collision.gameObject.CompareTag("Wall"))
         {
             isAttacking = true;
+            animator.SetBool("isKicking", isAttacking);
         }
 
         if (collision.gameObject.CompareTag("Bunny"))
@@ -113,9 +131,10 @@ public class BunnyMovement : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Wall"))
+        if (!isRetrating && collision.gameObject.CompareTag("Wall"))
         {
             isAttacking = false;
+            animator.SetBool("isKicking", isAttacking);
             navAgent.SetDestination(transform.position + 2 * Vector3.forward);
         }
     }
