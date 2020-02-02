@@ -6,11 +6,12 @@ public class PlayerAttack : MonoBehaviour
 {
     public GameObject snowball;
     public float powerMin = 5;
-    public float powerMax = 10;
+    public float powerMax = 6;
     float chargeStart;
     float chargeTime;
     public Animator animator;
     public GameObject arma;
+    public GameObject throwBar;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,7 @@ public class PlayerAttack : MonoBehaviour
 
     void StartCharging()
     {
+        throwBar.SetActive(true);
         chargeStart = Time.time;
     }
 
@@ -42,10 +44,18 @@ public class PlayerAttack : MonoBehaviour
         Shoot();
     }
 
-    void Shoot()
+    void ThrowBall()
     {
         GameObject newBall = Instantiate<GameObject>(snowball, arma.transform.position, snowball.transform.rotation);
         SnowballMovement movement = newBall.GetComponent<SnowballMovement>();
         movement.impulseForce = Mathf.Min(powerMax, powerMin + chargeTime);
+    }
+
+    void Shoot()
+    {
+        if(!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        {
+            animator.SetTrigger("Attack");
+        }
     }
 }

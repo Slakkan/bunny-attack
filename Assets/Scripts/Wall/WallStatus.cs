@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum Status
+public enum Status
 {
     untouched,
     damaged,
@@ -12,7 +12,7 @@ enum Status
 
 public class WallStatus : MonoBehaviour
 {
-    Status status;
+    public Status status;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -26,17 +26,38 @@ public class WallStatus : MonoBehaviour
     public void Damage()
     {
         status++;
-        if(status == Status.destroyed)
+        ChangeScale();
+        if (status == Status.destroyed)
         {
             Destroy(gameObject);
         }
     }
+
 
     void Repair()
     {
         if(status != 0 )
         {
             status--;
+            ChangeScale();
         }        
+    }
+
+    void ChangeScale()//Temporal
+    {
+        switch (status)
+        {
+            case Status.untouched:
+                transform.localScale = new Vector3(2, 2, 1);
+                break;
+
+            case Status.damaged:
+                transform.localScale = new Vector3(2, 1.25f, 1);
+                break;
+
+            case Status.broken:
+                transform.localScale = new Vector3(2, 0.75f, 1);
+                break;
+        }
     }
 }

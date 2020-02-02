@@ -294,7 +294,7 @@ Animator:
   m_GameObject: {fileID: 1881564557684960228}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 2e8a0cf42d8508c44ab85b5827fbf042, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a75168ddaa4e2b040bd2a6d2b15ddb1b, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -316,10 +316,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snowball: {fileID: 0}
-  snowballOffset: {x: -0.5, y: 0, z: 0}
   powerMin: 5
   powerMax: 10
   animator: {fileID: 0}
+  arma: {fileID: 0}
 --- !u!114 &4957651823551736107
 MonoBehaviour:
   m_ObjectHideFlags: 0

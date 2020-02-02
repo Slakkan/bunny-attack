@@ -5,13 +5,19 @@ using UnityEngine;
 public class SnowballMovement : MonoBehaviour
 {
     public Rigidbody rb;
-    public float impulseForce = 5;
+    public float impulseForce = 10;
     public Vector3 impulseAngle;
     // Start is called before the first frame update
     void Start()
     {
+        Vector3 sideSpeed = new Vector3(0, 0, 0);
         impulseAngle = transform.up + transform.forward;
-        rb.AddForce(impulseAngle * impulseForce, ForceMode.Impulse);
+        if(Input.GetAxis("Vertical") != 0)
+        {
+            sideSpeed = new Vector3(-Input.GetAxis("Vertical"), 0, 0);
+        }
+        
+        rb.AddForce((impulseAngle + sideSpeed) * impulseForce, ForceMode.Impulse);
     }
 
     // Update is called once per frame

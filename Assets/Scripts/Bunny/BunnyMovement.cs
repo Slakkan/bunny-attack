@@ -23,7 +23,7 @@ public class BunnyMovement : MonoBehaviour
     void Start()
     {
         StartCoroutine(ChangeFacing());
-        InvokeRepeating("ChasePlayer", 0, 1);
+        InvokeRepeating("ChasePlayer", 0, 0.1f);
         playerTransform = GameObject.Find("Snowman").transform;
     }
 
